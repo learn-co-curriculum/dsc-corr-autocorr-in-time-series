@@ -116,7 +116,7 @@ plt.xlabel('Year', fontsize=14);
 ```
 
 
-![png](index_files/index_8_0.png)
+![png](index_files/index_4_0.png)
 
 
 These time series seem to exhibit some seasonality as well. Do you see what's happening? Especially for "Diet" and "Gym" there seems to be a peak in the beginning of each year. The famous New Year's Resolutions!
@@ -196,7 +196,7 @@ plt.xlabel('Year', fontsize=14);
 ```
 
 
-![png](index_files/index_13_0.png)
+![png](index_files/index_9_0.png)
 
 
 
@@ -395,7 +395,7 @@ lag_1.plot(figsize=(18,6))
 
 
 
-![png](index_files/index_22_1.png)
+![png](index_files/index_16_1.png)
 
 
 You can see that the "lag 1 autocorrelation" is 0.62. Let's look at lag 2:
@@ -506,7 +506,7 @@ lag_12.corr()
 
 
 
-Unsurprisingly, this autocorrelation is high! We're basically comparing the series shifting our data 1 year, so january 2004 is compared to january 2005, and so on. Let's visualize these series and the 12-lag shifted series as well.
+Unsurprisingly, this autocorrelation is high! We're basically comparing the series shifting our data 1 year, so January 2004 is compared to January 2005, and so on. Let's visualize these series and the 12-lag shifted series as well.
 
 
 ```python
@@ -521,7 +521,7 @@ lag_12.plot(figsize=(18,6))
 
 
 
-![png](index_files/index_29_1.png)
+![png](index_files/index_23_1.png)
 
 
 ## The Autocorrelation Function
@@ -541,7 +541,7 @@ pd.plotting.autocorrelation_plot(diet);
 ```
 
 
-![png](index_files/index_33_0.png)
+![png](index_files/index_25_0.png)
 
 
 Look at that, you can clearly identify spikes for lags of multiples of 12. However, The dotted lines in the plot tell you about the statistical significance of the correlation. For these time series, you can say that 'Diet' is definitely autocorrelated for lags of twelve months and 24 months, but for some later lags the result is not significant.
@@ -567,10 +567,10 @@ pd.plotting.autocorrelation_plot(diet_diff)
 
 
 
-![png](index_files/index_37_1.png)
+![png](index_files/index_28_1.png)
 
 
-You can see that the ACF here seems a little more *stable*, revolving around 0, which is no surprise. Additionally, the autocorrelation for multiples of 12 seems concistently statistically significant, while it decays for longer time lags!
+You can see that the ACF here seems a little more *stable*, revolving around 0, which is no surprise. Additionally, the autocorrelation for multiples of 12 seems consistently statistically significant, while it decays for longer time lags!
 
 ## The Partial Autocorrelation Function
 
@@ -589,7 +589,7 @@ plot_pacf(diet, lags = 100);
 ```
 
 
-![png](index_files/index_42_0.png)
+![png](index_files/index_30_0.png)
 
 
 The partial autocorrelation function can be interpreted as a regression of the series against its past lags. It helps you come up with a possible order for the auto regressive term. The terms can be interpreted the same way as a standard linear regression, that is the contribution of a change in that particular lag while holding others constant. The use of PACF will become more clear when we will be looking at some more "advanced" time series next!
@@ -607,7 +607,7 @@ plot_acf(diet, lags = 100);
 ```
 
 
-![png](index_files/index_45_0.png)
+![png](index_files/index_32_0.png)
 
 
 Note that the plots (and especially the confidence bands) are slightly different. Feel free to have a loot at [this stackoverflow post](https://stackoverflow.com/questions/36038927/whats-the-difference-between-pandas-acf-and-statsmodel-acf) if you want to dig deeper.
