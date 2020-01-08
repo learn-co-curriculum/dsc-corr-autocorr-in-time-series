@@ -3,21 +3,21 @@
 
 ## Introduction
 
-In this lecture, we'll look at correlation,  autocorrelation and partial autocorrelation in time series. 
+In this lesson, we'll talk about correlation, autocorrelation, and partial autocorrelation in time series. 
 
 ## Objectives
 
 You will be able to:
-- Understand correlation in Time Series
-- Plot and discuss the autocorrelation function (ACF) for a time-series 
-- Plot and discuss the partial autocorrelation function (PACF) for a time-series 
-- Interpret ACF and PACF and Identify use cases both functions
+
+- Describe what role correlation plays in time series 
+- Plot and discuss the autocorrelation function (ACF) for a time series 
+- Plot and discuss the partial autocorrelation function (PACF) for a time series 
 
 ## Correlated Time Series
 
 As you've seen before, correlation is a statistical technique that shows whether and how strongly pairs of variables are related to each other. For correlated variables, you've seen that the Pearson correlation coefficient can be used to summarize the correlation between the variables.
 
-Knowing this, it's no surprise that time series can be correlated as well. To introduce the concept of correlated time series, we use a data set also used in this [blog post](https://www.datacamp.com/community/tutorials/time-series-analysis-tutorial) on www.datacamp.com. The data set contains Google Trends data of three keywords: Diet, Gym and Finance. Let's visualize this time series data.
+Knowing this, it's no surprise that time series can be correlated as well. To introduce the concept of correlated time series, we will use a dataset used in this [blog post](https://www.datacamp.com/community/tutorials/time-series-analysis-tutorial). The dataset contains Google Trends data of three keywords: Diet, Gym, and Finance. Let's visualize this time series data.
 
 
 ```python
@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 
 
 ```python
-gtrends  =  pd.read_csv('google_trends.csv', skiprows=1)
+gtrends = pd.read_csv('google_trends.csv', skiprows=1)
 gtrends.head()
 ```
 
@@ -105,7 +105,7 @@ gtrends.head()
 
 ```python
 gtrends.columns = ['Month', 'Diet', 'Gym', 'Finance']
-gtrends.Month = pd.to_datetime(gtrends.Month)
+gtrends['Month'] = pd.to_datetime(gtrends['Month'])
 gtrends.set_index('Month', inplace=True)
 ```
 
@@ -121,7 +121,7 @@ plt.xlabel('Year', fontsize=14);
 
 These time series seem to exhibit some seasonality as well. Do you see what's happening? Especially for "Diet" and "Gym" there seems to be a peak in the beginning of each year. The famous New Year's Resolutions!
 
-Not surprisingly, these two seem to move in similar directions at same times as well. We can use the .corr-function 
+Not surprisingly, these two seem to move in similar directions at same times as well. We can use the `.corr()` method to formally find the correlation measure:  
 
 
 
@@ -180,9 +180,9 @@ gtrends.corr()
 
 
 
-Interestingly, The correlations do not seem to be big, and have negative signs. But when we look at the plots, there is clearly some similar movements. What are we doing wrong?
+Interestingly, the correlations do not seem to be big, and have negative signs. But when we look at the plots, there are clearly some similar movements. What are we doing wrong?
 
-Remember how we said that we want to make our time series **stationary**? This is where you can show off your detrending skills! Turns out you can more easily find out if time series are correlated if you **detrend** them first. Let's use differencing to detrend these time series and then calculate the correlation again!
+Remember how we said that we want to make our time series **stationary**? This is where you can show off your detrending skills! Turns out you can easily find out if time series are correlated if you **detrend** them first. Let's use differencing to detrend these time series and then calculate the correlation again!
 
 
 ```python
@@ -259,11 +259,11 @@ So how did this happen? The spikes at the beginning of the year are a form of **
 
 ## Autocorrelation
 
-Autocorrelation is a very powerful tool for time series analysis. it helps us study how each time series observation is related to its recent (or not so recent) past. processes with greater autocorrelation are more predictable than those without any form of autocorrelation.
+Autocorrelation is a very powerful tool for time series analysis. It helps us study how each time series observation is related to its recent (or not so recent) past. Processes with greater autocorrelation are more predictable than those without any form of autocorrelation.
 
-Let's start with comparing the time series of the keyword "Diet", with the time series with a lag of one. What you're essentially doing, is your comparing each value in the time series, with yesterday's value (or in case of the "Diet" series, with the value in the previous month. This is called "lag 1 autocorrelation".
+Let's start with comparing the time series of the keyword "Diet", with the time series with a lag of one. What you're essentially doing is comparing each value in the time series with it's previous value (in case of the "Diet" series, with the value in the previous month). This is called "lag 1 autocorrelation".
 
-You can use the `.shift` function in pandas to shift the index forward, or backward.
+You can use the `.shift()` method in pandas to shift the index forward, or backward.
 
 
 ```python
@@ -333,7 +333,7 @@ diet_shift_1.head()
 
 
 ```python
-lag_1= pd.concat([diet_shift_1, diet], axis=1)
+lag_1 = pd.concat([diet_shift_1, diet], axis=1)
 
 lag_1.corr()
 ```
@@ -380,31 +380,24 @@ lag_1.corr()
 
 
 
-Let's plot them together to get a sense of what's happening
+You can see that the "lag 1 autocorrelation" is 0.62. Let's plot them together to get a sense of what's happening: 
 
 
 ```python
-lag_1.plot(figsize=(18,6))
+lag_1.plot(figsize=(18,6));
 ```
 
 
+![png](index_files/index_16_0.png)
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x120be0a58>
-
-
-
-
-![png](index_files/index_16_1.png)
-
-
-You can see that the "lag 1 autocorrelation" is 0.62. Let's look at lag 2:
+Let's look at lag 2: 
 
 
 ```python
 diet_shift_2 = diet.shift(periods=2)
 
-lag_2= pd.concat([diet_shift_2, diet], axis=1)
+lag_2 = pd.concat([diet_shift_2, diet], axis=1)
 
 lag_2.corr()
 ```
@@ -459,7 +452,7 @@ Now, how about a lag 12 autocorrelation?
 ```python
 diet_shift_12 = diet.shift(periods=12)
 
-lag_12= pd.concat([diet_shift_12, diet], axis=1)
+lag_12 = pd.concat([diet_shift_12, diet], axis=1)
 
 lag_12.corr()
 ```
@@ -506,33 +499,26 @@ lag_12.corr()
 
 
 
-Unsurprisingly, this autocorrelation is high! We're basically comparing the series shifting our data 1 year, so January 2004 is compared to January 2005, and so on. Let's visualize these series and the 12-lag shifted series as well.
+Unsurprisingly, this autocorrelation is high! We're basically comparing the series by shifting our data by 1 year, so January 2004 is compared to January 2005, and so on. Let's visualize these series and the 12-lag shifted series as well. 
 
 
 ```python
-lag_12.plot(figsize=(18,6))
+lag_12.plot(figsize=(18,6));
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x11fc33198>
-
-
-
-
-![png](index_files/index_23_1.png)
+![png](index_files/index_23_0.png)
 
 
 ## The Autocorrelation Function
 
 Great, but wouldn't it be nice to get a summary of the autocorrelations for each lag? Well, that's exactly what the **autocorrelation function** (often abbreviated to ACF) does. The autocorrelation function is a function that represents autocorrelation of a time series as a function of the time lag.
 
-The correlation function tells interesting stories about trends and seasonality. For example, if the original time series repeats itself every five days, you would expect to see a spike in the autocorrelation function at 5 days.
+The autocorrelation function tells interesting stories about trends and seasonality. For example, if the original time series repeats itself every five days, you would expect to see a spike in the autocorrelation function at 5 days.
 
-Creating an autocorrelation function for our "Diet" series, we you have the lag on the x-axis and the correlation value for each respective lag value on the y-axis. 
+Creating an autocorrelation function for our "Diet" series, we have the lag on the x-axis and the correlation value for each respective lag value on the y-axis. 
 
-You can use the `autocorrelation_plot` function in Pandas' `plotting` module.
+You can use the `autocorrelation_plot()` function in Pandas' `plotting` module.
 
 
 ```python
@@ -544,39 +530,32 @@ pd.plotting.autocorrelation_plot(diet);
 ![png](index_files/index_25_0.png)
 
 
-Look at that, you can clearly identify spikes for lags of multiples of 12. However, The dotted lines in the plot tell you about the statistical significance of the correlation. For these time series, you can say that 'Diet' is definitely autocorrelated for lags of twelve months and 24 months, but for some later lags the result is not significant.
+Look at that, you can clearly identify spikes for lags of multiples of 12. The dotted lines in the plot tell you about the statistical significance of the correlation. For this time series, you can say that "Diet" is definitely autocorrelated for lags of twelve months and 24 months, but for some later lags the result is not significant.
 
 Like before, instead of plotting the autocorrelation function for the "Diet" series as is, we can also plot the autocorrelation function for the differenced series. Let's see how that changes our result.
 
 
 ```python
-diet_diff = gtrends_diff[["Diet"]].dropna()
+diet_diff = gtrends_diff[['Diet']].dropna()
 ```
 
 
 ```python
 plt.figure(figsize=(12,6))
-pd.plotting.autocorrelation_plot(diet_diff)
+pd.plotting.autocorrelation_plot(diet_diff);
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x1c24083dd8>
-
-
-
-
-![png](index_files/index_28_1.png)
+![png](index_files/index_28_0.png)
 
 
 You can see that the ACF here seems a little more *stable*, revolving around 0, which is no surprise. Additionally, the autocorrelation for multiples of 12 seems consistently statistically significant, while it decays for longer time lags!
 
 ## The Partial Autocorrelation Function
 
-Similarly to the Autocorrelation Function, the **Partial Autocorrelation Function** (or PACF) gives the partial correlation of a time series with its own lagged values, controlling for the values of the time series at all shorter lags. It contrasts with the autocorrelation function, which does not control for other lags. PACF can be thought of as a summary of the relationship between a time series element with observations at a lag, *with the relationships of intervening observations removed*.
+Similar to the autocorrelation function, the **Partial Autocorrelation Function** (or PACF) gives the partial correlation of a time series with its own lagged values, controlling for the values of the time series at all shorter lags (unlike the autocorrelation function, which does not control for other lags). PACF can be thought of as a summary of the relationship between a time series element with observations at a lag, *with the relationships of intervening observations removed*.
 
-Let's plot the partial autocorrelation function of our "Diet" series. There is no Partial correlation function option in Pandas, but luckily, `Statsmodels` has one in its `tsaplots` module!
+Let's plot the partial autocorrelation function of our "Diet" series. Although Pandas doesn't have a partial autocorrelation function, but luckily, `statsmodels` has one in its `tsaplots` module! 
 
 
 ```python
@@ -585,16 +564,20 @@ from matplotlib.pylab import rcParams
 
 rcParams['figure.figsize'] = 14, 5
 
-plot_pacf(diet, lags = 100);
+plot_pacf(diet, lags=100);
 ```
 
+    //anaconda3/lib/python3.7/site-packages/statsmodels/regression/linear_model.py:1358: RuntimeWarning: invalid value encountered in sqrt
+      return rho, np.sqrt(sigmasq)
 
-![png](index_files/index_30_0.png)
 
 
-The partial autocorrelation function can be interpreted as a regression of the series against its past lags. It helps you come up with a possible order for the auto regressive term. The terms can be interpreted the same way as a standard linear regression, that is the contribution of a change in that particular lag while holding others constant. The use of PACF will become more clear when we will be looking at some more "advanced" time series next!
+![png](index_files/index_30_1.png)
 
-Sidenote: There is also a function `plot_acf` in statsmodels, which serves as an alternative to Pandas' `autocorrelation_plot`:
+
+The partial autocorrelation function can be interpreted as a regression of the series against its past lags. It helps you come up with a possible order for the auto regressive term. The terms can be interpreted the same way as a standard linear regression, that is the contribution of a change in that particular lag while holding others constant. The use of PACF will become more clear when we will be looking at some more "advanced" time series models!
+
+> NOTE: There is also a function `plot_acf()` in `statsmodels`, which serves as an alternative to Pandas' `autocorrelation_plot()`. 
 
 
 ```python
@@ -603,7 +586,7 @@ from matplotlib.pylab import rcParams
 
 rcParams['figure.figsize'] = 14, 5
 
-plot_acf(diet, lags = 100);
+plot_acf(diet, lags=100);
 ```
 
 
@@ -614,8 +597,8 @@ Note that the plots (and especially the confidence bands) are slightly different
 
 ## Addional reading
 
-[This blogpost](https://machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/) gives a great overview on what you've seen in this lesson! We'll learn about autoregression and moving average models later, so don't worry about this section too much yet!
+[This blogpost](https://machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/) gives a great overview on the concepts in this lesson, and we **strongly recommend** you read it! 
 
 ## Summary
 
-Great, you've now been introduced to correlation, the ACF and PACF. Let's practice in the next lab!
+Great, you've now been introduced to correlation, the ACF, and PACF. Let's practice in the next lab!
