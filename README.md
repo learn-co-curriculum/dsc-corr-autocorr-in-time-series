@@ -564,15 +564,11 @@ from matplotlib.pylab import rcParams
 
 rcParams['figure.figsize'] = 14, 5
 
-plot_pacf(diet, lags=100);
+plot_pacf(diet, lags=50);
 ```
 
-    //anaconda3/lib/python3.7/site-packages/statsmodels/regression/linear_model.py:1358: RuntimeWarning: invalid value encountered in sqrt
-      return rho, np.sqrt(sigmasq)
 
-
-
-![png](index_files/index_30_1.png)
+![png](index_files/index_30_0.png)
 
 
 The partial autocorrelation function can be interpreted as a regression of the series against its past lags. It helps you come up with a possible order for the auto regressive term. The terms can be interpreted the same way as a standard linear regression, that is the contribution of a change in that particular lag while holding others constant. The use of PACF will become more clear when we will be looking at some more "advanced" time series models!
@@ -586,14 +582,14 @@ from matplotlib.pylab import rcParams
 
 rcParams['figure.figsize'] = 14, 5
 
-plot_acf(diet, lags=100);
+plot_acf(diet, lags=50);
 ```
 
 
 ![png](index_files/index_32_0.png)
 
 
-Note that the plots (and especially the confidence bands) are slightly different. Feel free to have a loot at [this stackoverflow post](https://stackoverflow.com/questions/36038927/whats-the-difference-between-pandas-acf-and-statsmodel-acf) if you want to dig deeper.
+Note that the plots (and especially the confidence bands) are slightly different. Feel free to have a look at [this stackoverflow post](https://stackoverflow.com/questions/36038927/whats-the-difference-between-pandas-acf-and-statsmodel-acf) if you want to dig deeper.
 
 ## Addional reading
 
